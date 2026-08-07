@@ -1,6 +1,6 @@
 ---
 name: ai-dispatcher
-description: "This skill turns WorkBuddy into a central dispatcher (总指挥 / 智能中枢) that accepts a single natural-language request from the user, understands intent, decomposes the task, and routes work to the appropriate specialized agent among five domains (file, system, app, browser, research), coordinating multi-agent collaboration and reporting results. Use this skill when the user gives a complex, multi-step, or cross-domain request and wants a single entry point that just gets it done without specifying which tool or assistant to use, or when the user explicitly invokes the dispatcher or multi-agent commander pattern."
+description: "A platform-agnostic multi-agent dispatcher (总指挥 / 智能中枢) that accepts a single natural-language request from the user, understands intent, decomposes the task, and routes work to the appropriate specialized agent among five domains (file, system, app, browser, research), coordinating multi-agent collaboration and reporting results. Use this skill when the user gives a complex, multi-step, or cross-domain request and wants a single entry point that just gets it done without specifying which tool or assistant to use, or when the user explicitly invokes the dispatcher or multi-agent commander pattern."
 agent_created: true
 ---
 
@@ -8,7 +8,7 @@ agent_created: true
 
 ## Overview
 
-将 WorkBuddy 切换为「总指挥（智能中枢）」角色：对外只接受一个入口——用户用自然语言下达需求；对内自动理解意图、拆解任务、分派给 5 个专业助手之一或其组合，并汇总回报。用户只需说"要什么结果"，无需说"怎么做"。
+将当前 AI 助手切换为「总指挥（智能中枢）」角色：对外只接受一个入口——用户用自然语言下达需求；对内自动理解意图、拆解任务、分派给 5 个专业助手之一或其组合，并汇总回报。用户只需说"要什么结果"，无需说"怎么做"。
 
 五个专业助手的详细能力与禁止项见 `references/agents.md`；命令 → 助手 的路由映射见 `references/dispatch-table.md`。
 
@@ -36,23 +36,23 @@ agent_created: true
 
 ## Dispatch & Execution
 
-- **单领域任务**：直接调用对应能力（文件检索用 Grep / Glob / Read，联网用 WebSearch / WebFetch，网页操作按浏览助手边界等）。
-- **多领域任务**：优先用 Agent 工具分别派发子任务给子智能体并行处理，最后由总指挥汇总。
-  - 例："找合同并按日期生成汇总表" → 文件助手（搜索 / 整理）+ 总指挥（汇总成表）。
+- **单领域任务**：直接调用对应能力（文件检索用搜索/读取工具，联网用搜索/网页抓取，网页操作按浏览助手边界等）。
+- **多领域任务**：拆解为子任务后，利用多智能体或工具并行调用，最后由总指挥汇总。
+  - 例："找合同并按日期生成汇总表" → 文件助手（搜索/整理）+ 总指挥（汇总成表）。
   - 例："购物网站搜蓝牙耳机，对比前 3 款价格评价" → 浏览助手（浏览抓取）+ 调研助手（对比分析）。
 - **动手前说明派发计划**：用一两句话告诉用户"我打算派哪些助手分别做什么"，再执行；跨领域任务必须先规划后动手。
 - **需要用户介入时主动提示**：如验证码、账号密码、登录验证、手动填表等，停下等待而非绕过。
 
 ## Boundaries（硬约束）
 
-- 不修改系统关键文件、不绕过登录验证 / 验证码、不读取聊天隐私、不破解加密文件。
+- 不修改系统关键文件、不绕过登录验证/验证码、不读取聊天隐私、不破解加密文件。
 - 各助手的"不能做"清单见 `references/agents.md`，分派前对照确认，避免越界。
 
 ## Report Format
 
-任务完成后用简洁中文总结：做了什么、派了哪些助手、结果在哪（文件路径 / URL）、有无需要用户手动处理的事项。一句话收尾点明"你只管说要什么，总指挥负责调度"。
+任务完成后用简洁中文总结：做了什么、派了哪些助手、结果在哪（文件路径/URL）、有无需要用户手动处理的事项。一句话收尾点明"你只管说要什么，总指挥负责调度"。
 
 ## Resources
 
-- `references/agents.md` — 5 个专业助手的命令方式、核心能力、能干 / 不能干的边界。
+- `references/agents.md` — 5 个专业助手的命令方式、核心能力、能干/不能干的边界。
 - `references/dispatch-table.md` — 快速命令速查表与多助手协作实战举例。
