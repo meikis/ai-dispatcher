@@ -80,10 +80,11 @@ npm run typecheck
 
 - **单元测试**（12 文件）：types、semaphore、sandbox、validate、journal、tree、hooks、index、stream-json、codex-jsonl、subprocess —— 各模块独立验证
 - **集成测试**（2 文件）：run.test.ts、run-advanced.test.ts —— 端到端验证 runWorkflow 的完整生命周期
+- **真实场景 E2E**（1 文件）：real-project.test.ts —— 代码库安全扫描场景，验证多 Agent 协作、pipeline 容错、事件流、持久化
 
 ## Resources
 
 - `references/agents.md` — 6 个专业助手的命令方式、核心能力、能干/不能干的边界。
 - `references/dispatch-table.md` — 快速命令速查表与多助手协作实战举例。
 - `references/workflows.md` — 工程编排助手的详细使用指南：何时用 workflow、安装指引、workflow.js 编写要点、编排模式速查、运行方式、限制约束、可观测性与 resume。
-- `tests/` — 完整测试套件（14 文件 / 151 用例），覆盖类型、运行时、执行器、沙箱、日志等所有模块。
+- `tests/` — 完整测试套件（15 文件 / 157 用例），覆盖类型、运行时、执行器、沙箱、日志、真实场景 E2E 等所有模块。

@@ -73,6 +73,10 @@ export function createHooks(
 
       const result = await executor.runPrompt(execOpts);
 
+      if (result.isError) {
+        throw new Error(result.text || `Executor ${executor.name} returned an error`);
+      }
+
       let value: any;
       if (opts?.schema && result.structuredOutput !== undefined) {
         const validation = validateAgainstSchema(opts.schema, result.structuredOutput);

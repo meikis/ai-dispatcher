@@ -25,7 +25,7 @@ ai-dispatcher/
 ├── package.json                  # 项目依赖配置（ajv + @types/node + typescript）
 ├── tsconfig.json                 # TypeScript 编译配置
 ├── .gitignore                    # Git 忽略规则
-├── tests/                        # 单元测试 + 集成测试（共 151 用例 / 14 文件）
+├── tests/                        # 单元测试 + 集成测试（共 157 用例 / 15 文件）
 │   ├── types.test.ts             # 类型常量（TOTAL_AGENT_CAP）
 │   ├── semaphore.test.ts         # 并发信号量 + agent 计数器
 │   ├── sandbox.test.ts           # 沙箱：meta 提取 + 决定论检测 + 脚本运行
@@ -39,7 +39,8 @@ ai-dispatcher/
 │   ├── codex-jsonl.test.ts       # Codex jsonl reducer
 │   ├── subprocess.test.ts       # 子进程 executor
 │   ├── run.test.ts               # runWorkflow 集成测试
-│   └── run-advanced.test.ts      # runWorkflow 进阶测试（schema/并发/错误处理）
+│   ├── run-advanced.test.ts      # runWorkflow 进阶测试（schema/并发/错误处理）
+│   └── real-project.test.ts      # 真实场景：代码库安全扫描端到端测试
 ├── src/
 │   └── workflows/                # open-dynamic-workflows 源码内嵌
 │       ├── index.ts              # 公开 API：runWorkflow + 内置 executor
@@ -60,6 +61,9 @@ ai-dispatcher/
     ├── agents.md                 # 6 个专业助手的详细能力与禁止项
     ├── dispatch-table.md         # 命令 → 助手 路由映射 + 多助手协作实战举例
     └── workflows.md              # 工程编排助手详细使用指南
+├── examples/                     # 示例项目（非 skill 本体，供测试与参考）
+    ├── security-audit.js         # 示例 workflow：代码库安全扫描
+    └── src/                      # 示例代码：含安全问题的 3 个 .ts 文件
 ```
 
 | 文件 | 作用 |
@@ -69,6 +73,7 @@ ai-dispatcher/
 | `references/dispatch-table.md` | 快速命令速查表、多助手协作实战举例、指挥规则速记 |
 | `references/workflows.md` | 工程编排助手的何时用、安装指引、workflow.js 编写要点、编排模式速查、运行方式、限制约束、可观测性与 resume |
 | `src/workflows/` | open-dynamic-workflows 核心源码，通过 `import { runWorkflow } from './src/workflows'` 直接调用 |
+| `examples/` | 示例项目，演示 workflow 编写方式，被 `tests/real-project.test.ts` 用作端到端测试目标 |
 
 ### 快速开始
 
@@ -115,6 +120,7 @@ npm run typecheck
 | `subprocess.test.ts` | 7 | 子进程 executor、stdin/stdout/stderr、cleanup |
 | `run.test.ts` | 11 | runWorkflow 集成：内联/路径、agent 调用、并行、pipeline |
 | `run-advanced.test.ts` | 12 | runWorkflow 进阶：schema、agentType、registry、并发、错误传播 |
+| `real-project.test.ts` | 6 | 真实 E2E：代码库安全扫描、多 Agent 协作、部分失败容错、事件流验证 |
 
 ---
 
