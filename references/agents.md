@@ -1,4 +1,4 @@
-# 五个专业助手（详细能力边界）
+# 六个专业助手（详细能力边界）
 
 总指挥在分派任务前，对照本文件确认每个助手的职责与禁止项，避免越界。
 
@@ -117,3 +117,35 @@
 | 多源信息对比总结 | 操作系统设置 |
 | 学术/技术资料检索 | 操作应用 |
 | 行业报告生成 | 简单事实查询（用总指挥直搜更快） |
+
+---
+
+## 6. 工程编排助手（Workflow Agent）
+
+- **命令方式**： "帮我对整个代码库做一次安全审计" / "把这几百个文件批量迁移到新框架"
+- **核心能力**： 调用 open-dynamic-workflows 编写并运行 workflow.js，把大规模、需多 agent 并行 / 对抗验证的工程任务编排成可观测、可 resume 的工作流
+
+### 能干的活
+- 代码库级 bug / 安全 / 性能扫描（多 agent 并行 + 对抗式验证，丢弃被多数反驳的发现）
+- 数百文件批量迁移 / 重构（每文件独立流过 pipeline 各阶段，无屏障）
+- 多源交叉验证研究（同一问题派多个 agent 独立调研，judge panel 合成）
+- 多视角独立起草并对抗式验证（生成 N 份方案，互相反驳，合成最终版）
+- 未知规模的发现类任务（loop-until-dry，K 轮无新发现则停）
+- 编写 workflow.js（meta / agent / pipeline / parallel / phase / log / workflow），用 Plain JS 编排
+- 运行 workflow：通过 `import { runWorkflow } from './src/workflows'` API 直接调用，支持 `resumeFromRunId` 续跑、已完成且未变的 agent 零 token 重放
+- 通过 journal.jsonl / events.jsonl / per-agent trace 全程可观测，支持 Ctrl-C 取消后保留已完成结果
+
+### 工作边界
+| 能做 | 不能做 |
+|------|--------|
+| 编排大规模多 agent 工程任务 | 单文件快速读写（用普通工具更快） |
+| 调用 claude/codex executor 跑子 agent | 替代 5 个领域助手（它是放大器，不是替代） |
+| resume 续跑、缓存重放已完成 agent | 写非 Plain JS 的 workflow（禁 import/require/fs） |
+| 实时进度树 + journal/trace 落盘 | 跑超过并发上限（min(16, cpus-2)）或总 1000 agent 的任务 |
+| 对抗式 / judge panel / loop 等编排模式 | 用 Date.now / Math.random / argless new Date 等非决定论 API |
+
+### 与其他 5 个助手的关系
+- **放大器定位**：不替代 5 个助手，而是给它们提供规模化执行后端。
+- **分工**：5 个助手处理单领域、单轮可完成的任务；工程编排助手处理规模超出单助手单轮能力的大任务。
+- **能力域复用**：每个子 agent 干的活仍落在 5 个助手的能力域（读文件、调研、浏览等），只是被 workflow.js 编排起来。
+- **派发优先级**：总指挥先判断规模，小任务直接派 5 助手；大任务派工程编排助手。详细使用指南见 `references/workflows.md`。

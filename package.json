@@ -1,0 +1,22 @@
+{
+  "name": "ai-dispatcher",
+  "version": "1.0.0",
+  "description": "A platform-agnostic multi-agent dispatcher with open-dynamic-workflows source integration",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "ajv": "^8.17.0"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^26.1.2",
+    "typescript": "^5.7.0",
+    "vitest": "^4.1.10"
+  }
+}
